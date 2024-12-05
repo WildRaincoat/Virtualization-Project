@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: oai-smf
+  name: oai-smf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: oai-smf
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/rfsim5g-oai-public-net: "true"
+        io.kompose.service: oai-smf
+    spec:
+      containers:
+        - env:
+            - name: AMF_FQDN
+              value: oai-amf
+            - name: AMF_IPV4_ADDRESS
+              value: 192.168.71.132
+            - name: DEFAULT_CSCF_IPV4_ADDRESS
+              value: 127.0.0.1
+            - name: DEFAULT_DNS_IPV4_ADDRESS
+              value: 172.21.3.100
+            - name: DEFAULT_DNS_SEC_IPV4_ADDRESS
+              value: 4.4.4.4
+            - name: DISCOVER_UPF
+              value: "yes"
+            - name: DNN_NI0
+              value: oai
+            - name: DNN_RANGE0
+              value: 12.1.1.2 - 12.1.1.127
+            - name: ENABLE_USAGE_REPORTING
+              value: "no"
+            - name: NRF_FQDN
+              value: oai-nrf
+            - name: NRF_IPV4_ADDRESS
+              value: 192.168.71.130
+            - name: NSSAI_SST0
+              value: "1"
+            - name: REGISTER_NRF
+              value: "yes"
+            - name: SESSION_AMBR_DL0
+              value: 400Mbps
+            - name: SESSION_AMBR_UL0
+              value: 200Mbps
+            - name: SMF_INTERFACE_NAME_FOR_N4
+              value: eth0
+            - name: SMF_INTERFACE_NAME_FOR_SBI
+              value: eth0
+            - name: TYPE0
+              value: IPv4
+            - name: TZ
+              value: Europe/Paris
+            - name: UE_MTU
+              value: "1500"
+            - name: UPF_FQDN_0
+              value: oai-spgwu
+            - name: UPF_IPV4_ADDRESS
+              value: 192.168.71.134
+            - name: USE_FQDN_DNS
+              value: "yes"
+            - name: USE_LOCAL_SUBSCRIPTION_INFO
+              value: "yes"
+          image: oaisoftwarealliance/oai-smf:latest
+          name: rfsim5g-oai-smf
+          resources: {}
+      restartPolicy: Always
+status: {}

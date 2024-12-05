@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: oai-amf
+  name: oai-amf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: oai-amf
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/rfsim5g-oai-public-net: "true"
+        io.kompose.service: oai-amf
+    spec:
+      containers:
+        - env:
+            - name: AMF_INTERFACE_NAME_FOR_N11
+              value: eth0
+            - name: AMF_SET_ID
+              value: "1"
+            - name: MCC
+              value: "208"
+            - name: MNC
+              value: "99"
+            - name: MYSQL_DB
+              value: oai_db
+            - name: MYSQL_PASS
+              value: linux
+            - name: MYSQL_SERVER
+              value: 192.168.71.131
+            - name: MYSQL_USER
+              value: root
+            - name: NF_REGISTRATION
+              value: "yes"
+            - name: NRF_FQDN
+              value: oai-nrf
+            - name: NRF_IPV4_ADDRESS
+              value: 192.168.71.130
+            - name: PLMN_SUPPORT_MCC
+              value: "208"
+            - name: PLMN_SUPPORT_MNC
+              value: "99"
+            - name: PLMN_SUPPORT_TAC
+              value: "0x0001"
+            - name: REGION_ID
+              value: "128"
+            - name: SELECTED_0
+              value: "true"
+            - name: SERVED_GUAMI_AMF_SET_ID_0
+              value: "1"
+            - name: SERVED_GUAMI_AMF_SET_ID_1
+              value: "1"
+            - name: SERVED_GUAMI_MCC_0
+              value: "208"
+            - name: SERVED_GUAMI_MCC_1
+              value: "460"
+            - name: SERVED_GUAMI_MNC_0
+              value: "99"
+            - name: SERVED_GUAMI_MNC_1
+              value: "11"
+            - name: SERVED_GUAMI_REGION_ID_0
+              value: "128"
+            - name: SERVED_GUAMI_REGION_ID_1
+              value: "10"
+            - name: SMF_FQDN_0
+              value: oai-smf
+            - name: SMF_INSTANCE_ID_0
+              value: "1"
+            - name: SMF_IPV4_ADDR_0
+              value: 192.168.71.133
+            - name: SMF_SELECTION
+              value: "yes"
+            - name: SST_0
+              value: "1"
+            - name: TZ
+              value: Europe/paris
+            - name: USE_FQDN_DNS
+              value: "yes"
+            - name: USE_HTTP2
+              value: "no"
+          image: oaisoftwarealliance/oai-amf:latest
+          name: rfsim5g-oai-amf
+          resources: {}
+      restartPolicy: Always
+status: {}

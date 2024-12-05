@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nrf-healthcheck-config
+data:
+  nrf-healthcheck.sh: |
+    #!/bin/bash
+    STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:${NRF_INTERFACE_PORT_FOR_SBI}/nnrf-nfm/${NRF_API_VERSION}/healthcheck)
+    if [ $STATUS -eq 200 ]; then
+      exit 0
+    else
+      exit 1
+    fi

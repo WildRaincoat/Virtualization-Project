@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    io.kompose.service: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: mysql
+  template:
+    metadata:
+      labels:
+        io.kompose.service: mysql
+    spec:
+      containers:
+        - name: rfsim5g-mysql
+          image: mysql:5.7
+          env:
+            - name: TZ
+              value: Europe/Paris
+            - name: MYSQL_DATABASE
+              value: oai_db
+            - name: MYSQL_USER
+              value: test
+            - name: MYSQL_PASSWORD
+              value: test
+            - name: MYSQL_ROOT_PASSWORD
+              value: linux
+          livenessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - -c
+                - "/opt/mysql-scripts/mysql-healthcheck.sh"
+            initialDelaySeconds: 30
+            failureThreshold: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+          volumeMounts:
+            - name: mysql-initdb-config
+              mountPath: /docker-entrypoint-initdb.d/
+            - name: mysql-healthcheck-config
+              mountPath: /opt/mysql-scripts/
+      volumes:
+        - name: mysql-initdb-config
+          configMap:
+            name: mysql-initdb-config
+        - name: mysql-healthcheck-config
+          configMap:
+            name: mysql-healthcheck-config
+            defaultMode: 0755   # 设置文件权限为可执行

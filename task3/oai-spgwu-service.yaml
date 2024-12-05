@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oai-spgwu-service
+spec:
+  selector:
+    app: oai-spgwu
+  ports:
+    - name: gtp-u
+      port: 2152
+      protocol: UDP
+      targetPort: 2152
+    - name: sxa
+      port: 8805
+      protocol: UDP
+      targetPort: 8805

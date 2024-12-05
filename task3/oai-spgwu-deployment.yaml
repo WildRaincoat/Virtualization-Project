@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: oai-spgwu
+  name: oai-spgwu
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: oai-spgwu
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/rfsim5g-oai-public-net: "true"
+        io.kompose.network/rfsim5g-oai-traffic-net: "true"
+        io.kompose.service: oai-spgwu
+    spec:
+      containers:
+        - env:
+            - name: DNN_0
+              value: oai
+            - name: ENABLE_5G_FEATURES
+              value: "yes"
+            - name: NETWORK_UE_IP
+              value: 12.1.1.0/24
+            - name: NETWORK_UE_NAT_OPTION
+              value: "yes"
+            - name: NRF_FQDN
+              value: oai-nrf
+            - name: NRF_IPV4_ADDRESS
+              value: 192.168.71.130
+            - name: NSSAI_SD_0
+              value: "0xffffff"
+            - name: NSSAI_SST_0
+              value: "1"
+            - name: PGW_INTERFACE_NAME_FOR_SGI
+              value: eth0
+            - name: REGISTER_NRF
+              value: "yes"
+            - name: SGW_INTERFACE_NAME_FOR_S1U_S12_S4_UP
+              value: eth0
+            - name: SGW_INTERFACE_NAME_FOR_SX
+              value: eth0
+            - name: TZ
+              value: Europe/Paris
+            - name: UPF_FQDN_5G
+              value: oai-spgwu
+            - name: USE_FQDN_NRF
+              value: "yes"
+          image: oaisoftwarealliance/oai-spgwu-tiny:latest
+          name: rfsim5g-oai-spgwu
+          resources: {}
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+                - SYS_ADMIN
+              drop:
+                - ALL
+            privileged: true
+      restartPolicy: Always
+status: {}
